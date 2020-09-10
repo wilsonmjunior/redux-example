@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { Provider } from 'react-redux'
+import moment from 'moment';
 
-function App() {
+import store from './store'
+import Catalog from './components/Catalog'
+import Cart from './components/Catalog/Cart';
+
+const App: React.FC = () => {
+  const teste = [
+    { data: new Date(2020, 8, 10, 9, 30, 0) },
+    { data: new Date(2020, 8, 10, 9, 15, 0) },
+    { data: new Date(2020, 8, 10, 8, 54, 0) },
+    { data: new Date(2020, 8, 10, 14, 30, 0) },
+  ]
+
+  teste.sort((a, b) => {
+    if (a.data > b.data) {
+      return 1;
+    }
+    if (a.data < b.data) {
+      return -1;
+    }
+    return 0;
+  })
+
+  const novoTeste = teste.map((item) => {
+    const difference2 = moment(Date.now()).diff(moment(item.data), 'minutes');
+    if(difference2 <= 15) {
+      console.log(difference2)
+      return item
+    }
+  })
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Provider store={store}>
+      <h1>Welcome</h1>
+      <Catalog />
+      <Cart />
+    </Provider>
+  )
 }
 
-export default App;
+export default App
